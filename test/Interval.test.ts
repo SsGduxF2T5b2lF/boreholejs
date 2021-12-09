@@ -11,7 +11,7 @@ let hasDefaultInterval = () => {
   let { z0, z1 } = inv;
   expect(z0).toEqual(undefined);
   expect(z1).toEqual(undefined);
-}
+};
 
 describe('Create empty interval', () => {
   it('has default values', hasDefaultInterval);
@@ -30,7 +30,7 @@ describe('Create interval', () => {
     let { z0, z1, interval } = inv;
     expect(z0).toEqual(from);
     expect(z1).toEqual(to);
-    expect(interval).toEqual(to-from);
+    expect(interval).toEqual(to - from);
   });
 });
 
@@ -42,21 +42,21 @@ describe('Update interval', () => {
     let inv = new Interval({ z0: from_, z1: to_ });
     expect(inv.value.z0).toEqual(from_);
     expect(inv.value.z1).toEqual(to_);
-    expect(inv.value.interval).toEqual(to_-from_);
+    expect(inv.value.interval).toEqual(to_ - from_);
 
     // update new from to
     from_ = 0;
     inv.value = {
       z0: from_,
-    }
+    };
     expect(inv.value.z0).toEqual(from_);
-    expect(inv.value.interval).toEqual(to_-from_);
+    expect(inv.value.interval).toEqual(to_ - from_);
 
     to_ = 10;
     inv.value = {
       z1: to_,
-    }
+    };
     expect(inv.value.z1).toEqual(to_);
-    expect(inv.value.interval).toEqual(to_-from_);
+    expect(inv.value.interval).toEqual(to_ - from_);
   });
 });

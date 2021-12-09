@@ -12,10 +12,4 @@ export const sum = (a: number, b: number) => {
   return a + b;
 };
 
-export {
-  BoreholeList,
-  Borehole,
-  Collar,
-  Survey,
-  LoggingBase,
-};
+export { BoreholeList, Borehole, Collar, Survey, LoggingBase };

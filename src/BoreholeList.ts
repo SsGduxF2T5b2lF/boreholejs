@@ -11,12 +11,12 @@ const ERROR_BHID_DUPES = new Error(`BHID already used`);
 const ERROR_ID_DUPES = new Error(`ID already used`);
 
 class BoreholeList {
-  _id: string|undefined;
-  _name: string|undefined;
+  _id: string | undefined;
+  _name: string | undefined;
   _boreholes: Borehole[];
   // _bhIndex: any|undefined;
 
-  constructor({...props}: BHListProps = {}) {
+  constructor({ ...props }: BHListProps = {}) {
     this._id = undefined;
     this._name = undefined;
     this._boreholes = [];
@@ -27,9 +27,7 @@ class BoreholeList {
 
   _assignProps(props: BHListProps) {
     let newId = uidv4();
-    let {
-      name,
-    } = props;
+    let { name } = props;
 
     if (!name) {
       this._name = '';
@@ -43,8 +41,8 @@ class BoreholeList {
   }
 
   // append new borehole
-  public addBorehole({...props}: BoreholeProps & CollarProps = {}) {
-    let bh = new Borehole({...props});
+  public addBorehole({ ...props }: BoreholeProps & CollarProps = {}) {
+    let bh = new Borehole({ ...props });
 
     // HACK: prevent duplicates, though id already random uuid
     if (this.getBorehole(bh.id)) {
@@ -64,7 +62,7 @@ class BoreholeList {
   public getBorehole(id: string | undefined): Borehole | undefined {
     if (!id) return;
     let boreholes = this._boreholes;
-    return boreholes.filter(borehole => borehole.id == id)[0];
+    return boreholes.filter(borehole => borehole.id === id)[0];
   }
 
   /**
@@ -74,7 +72,7 @@ class BoreholeList {
   public getBoreholeByBHID(bhid: string | undefined): Borehole | undefined {
     if (!bhid) return;
     let boreholes = this._boreholes;
-    return boreholes.filter(borehole => borehole.bhid == bhid)[0];
+    return boreholes.filter(borehole => borehole.bhid === bhid)[0];
   }
 
   /**
@@ -82,12 +80,14 @@ class BoreholeList {
    */
   public removeBorehole(id: string | undefined): void {
     if (!id) return;
-    this._boreholes = this._boreholes.filter(borehole => borehole.id != id);
+    this._boreholes = this._boreholes.filter(borehole => borehole.id !== id);
   }
 
   public removeBoreholeByBHID(bhid: string | undefined): void {
     if (!bhid) return;
-    this._boreholes = this._boreholes.filter(borehole => borehole.bhid != bhid);
+    this._boreholes = this._boreholes.filter(
+      borehole => borehole.bhid !== bhid
+    );
   }
 
   public get name() {
@@ -98,8 +98,8 @@ class BoreholeList {
     this._name = val;
   }
 
-  public get boreholes(): Borehole[]|any[] {
-    return this._boreholes;;
+  public get boreholes(): Borehole[] | any[] {
+    return this._boreholes;
   }
 
   public isBorehole(input: any) {
@@ -118,29 +118,26 @@ class BoreholeList {
 
   _hasDuplicateBHID(boreholes: Borehole[]) {
     let ids = boreholes.map(item => item.bhid);
-    let dupes = ids.filter(
-      (item, index) => ids.indexOf(item) !== index
-    );
+    let dupes = ids.filter((item, index) => ids.indexOf(item) !== index);
     return dupes.length > 0;
   }
 
-  public set boreholes(input: Borehole[]|any[]) {
+  public set boreholes(input: Borehole[] | any[]) {
     let isBoreholes = true;
     try {
       input.forEach(item => {
         isBoreholes = this.isBorehole(item);
-      })
-    } catch(e) {
+      });
+    } catch (e) {
       isBoreholes = false;
     }
-
 
     if (isBoreholes) {
       this._boreholes = input;
     } else {
       try {
         this._setBoreholesFromProps(input);
-      } catch(e) {
+      } catch (e) {
         throw e;
       }
     }

@@ -10,14 +10,14 @@ let hasDefaultCollar = () => {
   expect(co).toHaveProperty('dip');
   expect(co).toHaveProperty('totalDepth');
 
-  let {x, y, z, azimuth, dip, totalDepth} = co;
+  let { x, y, z, azimuth, dip, totalDepth } = co;
   expect(x).toEqual(undefined);
   expect(y).toEqual(undefined);
   expect(z).toEqual(undefined);
   expect(azimuth).toEqual(0);
   expect(dip).toEqual(90);
   expect(totalDepth).toEqual(undefined);
-}
+};
 
 describe('Create borehole w/o bhid', () => {
   it('bhid has same value as id', () => {
@@ -31,7 +31,7 @@ describe('Create borehole w/o bhid', () => {
 describe('Create borehole w/ bhid', () => {
   it('bhid has set value', () => {
     let bhid = 'ID=1;YES';
-    let bh = new Borehole({bhid})
+    let bh = new Borehole({ bhid });
     expect(bh.bhid).toEqual(bhid);
   });
 
@@ -48,7 +48,12 @@ describe('Create borehole w/ collar properties', () => {
     let dip = 20;
 
     let bh = new Borehole({
-      x, y, z, totalDepth, dip, azimuth,
+      x,
+      y,
+      z,
+      totalDepth,
+      dip,
+      azimuth,
     });
 
     let co = bh.collar;
@@ -71,7 +76,12 @@ describe('Create borehole w/ collar properties', () => {
     let dip = 20;
 
     let bh = new Borehole({
-      x, y, z, totalDepth, dip, azimuth,
+      x,
+      y,
+      z,
+      totalDepth,
+      dip,
+      azimuth,
     });
     let oldId = bh._id;
 
@@ -88,7 +98,7 @@ describe('Create borehole w/ collar properties', () => {
       x: 101,
       y: 102,
       azimuth: 356,
-    }
+    };
     bh.collar = updatedCollar;
     co = bh.collar;
 
@@ -103,4 +113,3 @@ describe('Create borehole w/ collar properties', () => {
     expect(bh.id).toEqual(oldId);
   });
 });
-

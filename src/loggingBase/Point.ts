@@ -6,15 +6,15 @@ interface PointProps {
  * class Point seems ambiguous with geometry Point
  */
 class Point {
-  at: number|undefined;
+  at: number | undefined;
 
-  constructor({...props}: PointProps = {}) {
+  constructor({ ...props }: PointProps = {}) {
     this.at = undefined;
 
     this._assignProps(props);
   }
 
-  _assignProps({...props}: PointProps = {}) {
+  _assignProps({ ...props }: PointProps = {}) {
     let { at } = props;
 
     if (at !== null && at !== undefined) {
@@ -24,7 +24,7 @@ class Point {
 
   getValues() {
     let result = {
-      'at': this.at,
+      at: this.at,
     };
 
     return result;
@@ -34,7 +34,7 @@ class Point {
     return this.getValues();
   }
 
-  public set value({...props}: PointProps) {
+  public set value({ ...props }: PointProps) {
     this._assignProps(props);
   }
 }

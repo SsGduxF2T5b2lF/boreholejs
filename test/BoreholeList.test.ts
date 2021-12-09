@@ -11,7 +11,7 @@ describe('create borehole list entity', () => {
     expect(bhList).toHaveProperty('id');
     expect(bhList).toHaveProperty('name');
     expect(bhList).toHaveProperty('boreholes');
-    expect(typeof(bhList.id)).toEqual('string');
+    expect(typeof bhList.id).toEqual('string');
     expect(bhList.name).toEqual(projectName);
     expect(bhList.boreholes).toHaveLength(0);
   });
@@ -59,8 +59,8 @@ describe('Create borehole list w/o detail', () => {
       expect(borehole.collar.x).toEqual(item.x);
       expect(borehole.collar.y).toEqual(item.y);
       expect(borehole.collar.z).toEqual(item.z);
-      expect(borehole.collar.azimuth).toEqual(item.azimuth%360);
-      expect(borehole.collar.dip).toEqual(item.dip%360);
+      expect(borehole.collar.azimuth).toEqual(item.azimuth % 360);
+      expect(borehole.collar.dip).toEqual(item.dip % 360);
       expect(borehole.collar.totalDepth).toEqual(item.totalDepth);
 
       expect(borehole.collar.x).toEqual(boreholeInfo.x);
@@ -111,8 +111,8 @@ describe('Create borehole list w/o detail', () => {
       expect(borehole.collar.x).toEqual(item.x);
       expect(borehole.collar.y).toEqual(item.y);
       expect(borehole.collar.z).toEqual(item.z);
-      expect(borehole.collar.azimuth).toEqual(item.azimuth%360);
-      expect(borehole.collar.dip).toEqual(item.dip%360);
+      expect(borehole.collar.azimuth).toEqual(item.azimuth % 360);
+      expect(borehole.collar.dip).toEqual(item.dip % 360);
       expect(borehole.collar.totalDepth).toEqual(item.totalDepth);
 
       expect(borehole.collar.x).toEqual(boreholeInfo.x);
@@ -151,7 +151,7 @@ describe('Borehole list', () => {
     ];
     let updateWithDupes = () => {
       bhList.boreholes = bhidList;
-    }
+    };
 
     expect(updateWithDupes).toThrow('BHID already used');
   });
@@ -196,8 +196,11 @@ describe('Borehole list', () => {
     // old value unchanged
     expect(bhList.boreholes[1].value.y).toEqual(secondBorehole.collar.y);
     expect(bhList.boreholes[1].value.z).toEqual(secondBorehole.collar.z);
-    expect(bhList.boreholes[1].value.azimuth).toEqual(secondBorehole.collar.azimuth);
-    expect(bhList.boreholes[1].value.totalDepth).toEqual(secondBorehole.collar.totalDepth);
+    expect(bhList.boreholes[1].value.azimuth).toEqual(
+      secondBorehole.collar.azimuth
+    );
+    expect(bhList.boreholes[1].value.totalDepth).toEqual(
+      secondBorehole.collar.totalDepth
+    );
   });
 });
-

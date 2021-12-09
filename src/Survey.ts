@@ -5,11 +5,11 @@ interface SurveyProps {
 }
 
 class Survey {
-  at: number|undefined;
+  at: number | undefined;
   dip: number;
   azimuth: number;
 
-  constructor({...props}: SurveyProps = {}) {
+  constructor({ ...props }: SurveyProps = {}) {
     let { at, dip, azimuth } = props;
 
     this.at = at;
@@ -18,11 +18,11 @@ class Survey {
   }
 
   dipVal(val: number = 90): number {
-    return val%360;
+    return val % 360;
   }
 
   azimuthVal(val: number = 0): number {
-    return val%360;
+    return val % 360;
   }
 }
 

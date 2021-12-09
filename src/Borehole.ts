@@ -7,11 +7,11 @@ import {
 } from './common/types';
 
 class Borehole {
-  _id: string|undefined;
-  bhid: string|undefined;
+  _id: string | undefined;
+  bhid: string | undefined;
   _collar: Collar;
 
-  constructor({...props}: CreateBoreholeProps = {}) {
+  constructor({ ...props }: CreateBoreholeProps = {}) {
     this.bhid = undefined;
     this._id = undefined;
     // init as empty then update in _assignProps
@@ -26,9 +26,7 @@ class Borehole {
 
   _assignProps(props: CreateBoreholeProps = {}) {
     let newId = uidv4();
-    let {
-      bhid,
-    } = props;
+    let { bhid } = props;
 
     if (bhid) {
       this.bhid = bhid;
@@ -45,8 +43,8 @@ class Borehole {
 
   getValues() {
     let result = {
-      'bhid': this.bhid,
-      ...this.collar
+      bhid: this.bhid,
+      ...this.collar,
     };
     return result;
   }
@@ -55,7 +53,7 @@ class Borehole {
     return this.getValues();
   }
 
-  public set value({...props}: CreateBoreholeProps) {
+  public set value({ ...props }: CreateBoreholeProps) {
     this._assignProps(props);
   }
 
@@ -67,12 +65,12 @@ class Borehole {
     return this.getCollar().value;
   }
 
-  public set collar({...props}) {
+  public set collar({ ...props }) {
     let collar = this.getCollar();
     let newCollar = {
       ...collar,
-      ...props
-    }
+      ...props,
+    };
     if (collar) {
       collar.value = newCollar;
     }

@@ -3,14 +3,14 @@ import { Collar } from '../src';
 describe('Create empty collar', () => {
   it('has undefined values', () => {
     let co = new Collar();
-    expect(co).toHaveProperty('x')
-    expect(co).toHaveProperty('y')
-    expect(co).toHaveProperty('z')
-    expect(co).toHaveProperty('azimuth')
-    expect(co).toHaveProperty('dip')
-    expect(co).toHaveProperty('totalDepth')
+    expect(co).toHaveProperty('x');
+    expect(co).toHaveProperty('y');
+    expect(co).toHaveProperty('z');
+    expect(co).toHaveProperty('azimuth');
+    expect(co).toHaveProperty('dip');
+    expect(co).toHaveProperty('totalDepth');
 
-    let {x, y, z, azimuth, totalDepth, dip} = co;
+    let { x, y, z, azimuth, totalDepth, dip } = co;
     expect(x).toEqual(undefined);
     expect(y).toEqual(undefined);
     expect(z).toEqual(undefined);
@@ -30,7 +30,7 @@ describe('create collar w/ props', () => {
       dip: 90,
       totalDepth: 100,
     });
-    let {x, y, z, azimuth, dip, totalDepth} = co;
+    let { x, y, z, azimuth, dip, totalDepth } = co;
 
     expect(x).toEqual(0);
     expect(y).toEqual(1000);
@@ -45,7 +45,7 @@ describe('create collar w/ props', () => {
       azimuth: 720,
       dip: 370,
     });
-    let {azimuth, dip} = co;
+    let { azimuth, dip } = co;
 
     expect(azimuth).toEqual(0);
     expect(dip).toEqual(10);
@@ -62,7 +62,7 @@ describe('setter', () => {
       ...co.value,
       x: 101,
       y: 102,
-    }
+    };
 
     co.value = newCollar;
   });
