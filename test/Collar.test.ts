@@ -51,3 +51,19 @@ describe('create collar w/ props', () => {
     expect(dip).toEqual(10);
   });
 });
+
+describe('setter', () => {
+  it('set new value', () => {
+    let co = new Collar({
+      azimuth: 720,
+      dip: 370,
+    });
+    let newCollar = {
+      ...co.value,
+      x: 101,
+      y: 102,
+    }
+
+    co.value = newCollar;
+  });
+});

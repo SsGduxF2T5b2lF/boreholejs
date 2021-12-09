@@ -59,4 +59,48 @@ describe('Create borehole w/ collar properties', () => {
     expect(co.dip).toEqual(dip);
     expect(co.totalDepth).toEqual(totalDepth);
   });
+
+  /**
+   */
+  it('can update collar properties', () => {
+    let x = 10;
+    let y = 11;
+    let z = 12;
+    let totalDepth = 100;
+    let azimuth = 30;
+    let dip = 20;
+
+    let bh = new Borehole({
+      x, y, z, totalDepth, dip, azimuth,
+    });
+    let oldId = bh._id;
+
+    let co = bh.collar;
+    expect(co.x).toEqual(x);
+    expect(co.y).toEqual(y);
+    expect(co.z).toEqual(z);
+    expect(co.azimuth).toEqual(azimuth);
+    expect(co.dip).toEqual(dip);
+    expect(co.totalDepth).toEqual(totalDepth);
+
+    let updatedCollar = {
+      ...co,
+      x: 101,
+      y: 102,
+      azimuth: 356,
+    }
+    bh.collar = updatedCollar;
+    co = bh.collar;
+
+    expect(co.x).toEqual(updatedCollar.x);
+    expect(co.y).toEqual(updatedCollar.y);
+    expect(co.z).toEqual(updatedCollar.z);
+    expect(co.azimuth).toEqual(updatedCollar.azimuth);
+    expect(co.dip).toEqual(updatedCollar.dip);
+    expect(co.totalDepth).toEqual(updatedCollar.totalDepth);
+
+    // id not updated
+    expect(bh.id).toEqual(oldId);
+  });
 });
+

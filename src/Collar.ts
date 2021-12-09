@@ -1,21 +1,27 @@
-interface CollarProps {
-  x: number;
-  y: number;
-  z: number;
-  azimuth: number;
-  dip: number;
-  totalDepth: number;
-}
+import {
+  CollarProps,
+} from './common/types';
 
 class Collar {
-  x: number;
-  y: number;
-  z: number;
-  azimuth: number;
-  dip: number;
-  totalDepth: number;
+  x: number|undefined;
+  y: number|undefined;
+  z: number|undefined;
+  azimuth: number|undefined;
+  dip: number|undefined;
+  totalDepth: number|undefined;
 
   constructor({...props}: CollarProps|any = {}) {
+    this.x = undefined;
+    this.y = undefined;
+    this.z = undefined;
+    this.azimuth = undefined;
+    this.dip = undefined;
+    this.totalDepth = undefined;
+
+    this._assignProps(props);
+  }
+
+  _assignProps(props: CollarProps = {}) {
     const {
       x,
       y,
@@ -33,7 +39,11 @@ class Collar {
     this.totalDepth = totalDepth;
   }
 
-  public get value() {
+  public set value({...props}: CollarProps) {
+    this._assignProps(props);
+  }
+
+  public get value(): CollarProps {
     let result = {
       'x': this.x,
       'y': this.y,
