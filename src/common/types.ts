@@ -1,7 +1,28 @@
-// Interval Props
+// LoggingBase/Interval Props
 export interface IntervalProps {
   z0?: number;
   z1?: number;
+}
+
+// LoggingBase/Point Props
+export interface PointProps {
+  at?: number;
+}
+
+// LoggingProperties/Geology Props
+export interface GeologyProps {
+  lithology?: string;
+  oxide?: string;
+  alteration?: string;
+  comment?: string;
+}
+
+// LoggingDump Props
+export interface LoggingDumpProps
+  extends IntervalProps,
+    PointProps,
+    GeologyProps {
+  interval?: number | undefined;
 }
 
 // Borehole List Props

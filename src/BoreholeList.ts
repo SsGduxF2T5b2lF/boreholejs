@@ -10,6 +10,14 @@ import {
 const ERROR_BHID_DUPES = new Error(`BHID already used`);
 const ERROR_ID_DUPES = new Error(`ID already used`);
 
+/**
+ * TODO: in a project set loggingProperties enums
+ * currently enums for ALTERATIONS, etc are set
+ * at ./loggingProperties/constants.ts.
+ * might be better if these are configurable through methods
+ * such as this.setAlterationEnums()
+ */
+
 class BoreholeList {
   _id: string | undefined;
   _name: string | undefined;

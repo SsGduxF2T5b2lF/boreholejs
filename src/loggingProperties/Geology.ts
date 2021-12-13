@@ -1,11 +1,6 @@
 import { enumGeology } from './constants';
 
-interface GeologyProps {
-  lithology?: string;
-  oxide?: string;
-  alteration?: string;
-  comment?: string;
-}
+import { GeologyProps } from '../common/types';
 
 const { LITHOLOGIES, OXIDES, ALTERATIONS } = enumGeology;
 
