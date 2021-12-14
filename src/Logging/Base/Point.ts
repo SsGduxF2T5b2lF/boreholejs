@@ -1,4 +1,4 @@
-import { PointProps } from '../common/types';
+import { PointProps } from '../../common/types';
 
 /**
  * class Point seems ambiguous with geometry Point

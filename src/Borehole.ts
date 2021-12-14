@@ -1,10 +1,6 @@
 import { v4 as uidv4 } from 'uuid';
 import Collar from './Collar';
-import {
-  // BoreholeProps,
-  // CollarProps,
-  CreateBoreholeProps,
-} from './common/types';
+import { CreateBoreholeProps } from './common/types';
 
 class Borehole {
   _id: string | undefined;

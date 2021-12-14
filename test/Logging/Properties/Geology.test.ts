@@ -1,4 +1,4 @@
-import { LoggingProperties } from '../../src';
+import { LoggingProperties } from '../../../src';
 
 const { Geology } = LoggingProperties;
 

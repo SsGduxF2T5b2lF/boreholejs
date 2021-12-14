@@ -1,4 +1,4 @@
-import { LoggingBase } from '../../src';
+import { LoggingBase } from '../../../src';
 
 const { Interval } = LoggingBase;
 

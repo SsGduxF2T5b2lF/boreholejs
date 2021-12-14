@@ -1,3 +1,5 @@
+import { v4 as uidv4 } from 'uuid';
+
 /**
  * Doubly Linked List by DevMaking.com ( Andrew McShane )
  * article: https://www.devmaking.com/learn/data-structures/doubly-linked-list/
@@ -10,6 +12,8 @@
  */
 
 export class LLItem {
+  private _id: string;
+  private maxRetries: number;
   public parent?: LinkedList;
   public value: any;
   public next?: LLItem;
@@ -21,10 +25,33 @@ export class LLItem {
    * @param {LinkedList} parent - the parent LinkedList
    */
   constructor(value?: any, parent?: LinkedList) {
+    this.maxRetries = 10;
     this.parent = parent;
     this.value = value;
     this.next = undefined;
     this.prev = undefined;
+    this._id = this.setID();
+  }
+
+  public get id() {
+    return (' ' + String(this._id)).slice(1);
+  }
+
+  /**
+   */
+  setID(): string {
+    let succeed = undefined;
+    let newID = '';
+    for (let i = 0; i < this.maxRetries; i++) {
+      if (succeed) break;
+      newID = uidv4();
+      if (this.hasParent()) {
+        succeed = this.parent?.mapID(newID, this);
+      } else {
+        succeed = true;
+      }
+    }
+    return newID;
   }
 
   /**
@@ -66,12 +93,30 @@ export class LLItem {
   /**
    * returning detached connection (cool words, amirite?)
    */
-  detach() {
+  private detach() {
     let { next, prev } = this;
     delete this.next;
     delete this.prev;
     delete this.parent;
     return { next, prev };
+  }
+
+  /**
+   * detach, this.parent.removeItemByID
+   */
+  removeSelf() {
+    let { next, prev } = this.detach();
+    if (next) {
+      next.prev = prev;
+    }
+    if (prev) {
+      prev.next = next;
+    }
+
+    if (this.hasParent() && this.parent) {
+      this.parent.deleteMapID(this.id);
+      this.parent.decrease();
+    }
   }
 
   /**
@@ -157,11 +202,41 @@ export class LinkedList {
   head?: LLItem;
   tail?: LLItem;
   private size: number;
+  idMap: { [key: string]: LLItem | undefined };
 
   constructor() {
     this.head = undefined;
     this.tail = undefined;
     this.size = 0;
+    this.idMap = {};
+  }
+
+  public mapID(uuid: string | undefined, item: LLItem): boolean | undefined {
+    if (!uuid) return;
+    if (!this.idMap[uuid]) {
+      this.idMap[uuid] = item;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public deleteMapID(uuid: string | undefined) {
+    if (!uuid) return;
+    delete this.idMap[uuid];
+  }
+
+  public getItemByID(uuid: string | undefined): LLItem | undefined {
+    if (!uuid) return;
+    return this.idMap[uuid];
+  }
+
+  public removeItemByID(uuid: string | undefined): void {
+    if (!uuid) return;
+    let llItem = this.getItemByID(uuid);
+    if (!!llItem) {
+      llItem.removeSelf();
+    }
   }
 
   public increase() {
@@ -238,46 +313,31 @@ export class LinkedList {
   }
 
   public addLast(value: any) {
+    let tmp;
     if (this.isEmpty()) {
-      let tmp = new LLItem(value, this);
+      tmp = new LLItem(value, this);
       tmp.value = value;
       this.head = tmp;
       this.tail = tmp;
       this.size++;
       // return;
     } else {
-      let tmp = new LLItem(value, this);
-      tmp.next = undefined;
-      tmp.prev = this.tail;
-      tmp.value = value;
-
-      if (this.tail) {
-        this.tail.next = tmp;
-      }
-
-      this.tail = tmp;
-      this.size++;
+      tmp = this.last;
+      tmp?.addNext(value);
     }
   }
 
   public addFirst(value: any) {
+    let tmp;
     if (this.isEmpty()) {
-      let tmp = new LLItem(value, this);
+      tmp = new LLItem(value, this);
       // tmp.value = value;
       this.head = tmp;
       this.tail = tmp;
       this.size++;
     } else {
-      let tmp = new LLItem(value, this);
-      // tmp.value = value;
-      tmp.next = this.head;
-      tmp.prev = undefined;
-
-      if (this.head) {
-        this.head.prev = tmp;
-      }
-      this.head = tmp;
-      this.size++;
+      tmp = this.first;
+      tmp?.addPrev(value);
     }
   }
 

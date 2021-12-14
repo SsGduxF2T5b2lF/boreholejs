@@ -113,3 +113,12 @@ describe('Create borehole w/ collar properties', () => {
     expect(bh.id).toEqual(oldId);
   });
 });
+
+/*
+describe('borehole logging', () => {
+  it('can use logging entity from borehole', () => {
+    let bh = new Borehole();
+    let log = bh.logging;
+  });
+});
+ */

@@ -1,4 +1,4 @@
-import { IntervalProps } from '../common/types';
+import { IntervalProps } from '../../common/types';
 
 class Interval {
   z0: number | undefined;

@@ -4,6 +4,7 @@ describe('Empty linked list', () => {
   it('has default linked list properties', () => {
     let ll = new LinkedList();
     expect(ll).toHaveProperty('size');
+    expect(ll).toHaveProperty('idMap');
     expect(ll).toHaveProperty('head');
     expect(ll).toHaveProperty('tail');
     expect(ll).toHaveProperty('length');
@@ -51,6 +52,7 @@ describe('Linked list item', () => {
     let llItem = new LLItem(0);
     let val = llItem.value;
 
+    expect(llItem).toHaveProperty('id');
     expect(llItem).toHaveProperty('value');
     expect(llItem).toHaveProperty('next');
     expect(llItem).toHaveProperty('prev');
@@ -58,6 +60,7 @@ describe('Linked list item', () => {
 
     let nextItem = llItem.addNext(1);
     val = nextItem.value;
+    expect(nextItem).toHaveProperty('id');
     expect(nextItem).toHaveProperty('value');
     expect(nextItem).toHaveProperty('next');
     expect(nextItem).toHaveProperty('prev');
@@ -65,6 +68,7 @@ describe('Linked list item', () => {
 
     let prevItem = llItem.addPrev(2);
     val = prevItem.value;
+    expect(prevItem).toHaveProperty('id');
     expect(prevItem).toHaveProperty('value');
     expect(prevItem).toHaveProperty('next');
     expect(prevItem).toHaveProperty('prev');
@@ -110,4 +114,34 @@ describe('Create from array', () => {
 
     expect(refArr).toEqual(inputArr);
   });
+});
+
+describe('Linked list idMap', () => {
+  it('map item id in a container', () => {
+    let llist = new LinkedList();
+    expect(llist.length).toEqual(0);
+    llist.addLast(0);
+    llist.addLast(1);
+    llist.addLast(2);
+    expect(llist.length).toEqual(3);
+    expect(llist).toHaveProperty('idMap');
+
+    let mapLength = Object.keys(llist.idMap).length;
+    expect(llist.length).toEqual(mapLength);
+
+    let first = llist.first;
+    let theID = first?.id;
+    let getByID = llist.getItemByID(theID);
+
+    let secondIdA = first?.next?.id;
+    let secondIdB = getByID?.next?.id;
+
+    expect(getByID).toBeInstanceOf(LLItem);
+
+    expect(secondIdA).toBeTruthy();
+    expect(secondIdB).toBeTruthy();
+    expect(secondIdA).toEqual(secondIdB);
+  });
+
+  it('can get and remove item by id', () => {});
 });

@@ -1,11 +1,11 @@
-import { Logging, LoggingBase } from '../src';
+import { Logging, LoggingBase, LoggingProperties } from '../src';
 
-describe('empty base and properties', () => {
+describe('empty base and property entity', () => {
   it('has zero rows', () => {
     let logs = new Logging();
 
-    expect(logs).toHaveProperty('base');
-    expect(logs).toHaveProperty('properties');
+    expect(logs).toHaveProperty('baseEntity');
+    expect(logs).toHaveProperty('propertyEntities');
     expect(logs).toHaveProperty('rows');
     expect(logs.rows).toHaveLength(0);
   });
@@ -18,19 +18,19 @@ describe('empty base and properties', () => {
   });
 });
 
-describe('define base w/ empty properties', () => {
+describe('define base entity w/ empty property entity', () => {
   it('can set point', () => {
     let logs = new Logging();
 
-    logs.setBase('point');
+    logs.setBaseEntity('point');
 
-    expect(logs.base).toEqual(LoggingBase.Point);
+    expect(logs.baseEntity).toEqual(LoggingBase.Point);
   });
 
   it('has point information on dump', () => {
     let logs = new Logging();
 
-    logs.setBase('point');
+    logs.setBaseEntity('point');
 
     let inputRow = { at: 0, z0: 0, z1: 10 };
     logs.rows.fromArray([inputRow]);
@@ -46,15 +46,15 @@ describe('define base w/ empty properties', () => {
   it('can set interval', () => {
     let logs = new Logging();
 
-    logs.setBase('interval');
+    logs.setBaseEntity('interval');
 
-    expect(logs.base).toEqual(LoggingBase.Interval);
+    expect(logs.baseEntity).toEqual(LoggingBase.Interval);
   });
 
   it('has interval information on dump', () => {
     let logs = new Logging();
 
-    logs.setBase('interval');
+    logs.setBaseEntity('interval');
 
     let inputRow = { at: 0, z0: 0, z1: 10 };
     logs.rows.fromArray([inputRow]);
@@ -72,10 +72,154 @@ describe('define base w/ empty properties', () => {
   });
 });
 
-describe('empty base and single properties', () => {});
+describe('empty base entity and single property entity', () => {
+  it('can set property entities', () => {
+    let logs = new Logging();
 
+    expect(logs.propertyEntities).toHaveLength(0);
+
+    logs.addPropertyEntity('geology');
+
+    expect(logs.propertyEntities).toHaveLength(1);
+
+    let hasGeology = logs.propertyEntities.includes(LoggingProperties.Geology);
+    expect(hasGeology).toBeTruthy();
+  });
+
+  it('cannot have duplicate property entities', () => {
+    let logs = new Logging();
+
+    expect(logs.propertyEntities).toHaveLength(0);
+
+    logs.addPropertyEntity('geology');
+    logs.addPropertyEntity('geology');
+    expect(logs.propertyEntities).toHaveLength(1);
+  });
+
+  it('can set geology info and dump values', () => {
+    let logs = new Logging();
+
+    logs.addPropertyEntity('geology');
+
+    expect(logs.rows.length).toEqual(0);
+
+    let inputRow = {
+      alteration: '',
+      lithology: '',
+      oxide: '',
+      comment: '',
+    };
+    logs.rows.fromArray([inputRow]);
+
+    expect(logs.rows.toArray()).toHaveLength(1);
+
+    let firstRow = logs.dump()[0];
+
+    expect(firstRow).toHaveProperty('lithology');
+    expect(firstRow).toHaveProperty('alteration');
+    expect(firstRow).toHaveProperty('oxide');
+    expect(firstRow).toHaveProperty('comment');
+    expect(firstRow.alteration).toEqual(inputRow.alteration);
+    expect(firstRow.lithology).toEqual(inputRow.lithology);
+    expect(firstRow.oxide).toEqual(inputRow.oxide);
+    expect(firstRow.comment).toEqual(inputRow.oxide);
+  });
+});
+
+describe('defined base and single property entity', () => {
+  it('can dump values properly, interval #1', () => {
+    let logs = new Logging();
+
+    logs.setBaseEntity('interval');
+    logs.addPropertyEntity('geology');
+
+    let inputRow = {
+      z0: 0,
+      alteration: 'SIL',
+      lithology: 'DCT',
+      oxide: 'COX',
+      comment: 'a comment',
+    };
+    logs.rows.fromArray([inputRow]);
+
+    let firstRow = logs.dump()[0];
+
+    expect(firstRow).toHaveProperty('z0');
+    expect(firstRow).toHaveProperty('lithology');
+    expect(firstRow).toHaveProperty('alteration');
+    expect(firstRow).toHaveProperty('oxide');
+    expect(firstRow).toHaveProperty('comment');
+    expect(firstRow.z0).toEqual(inputRow.z0);
+    expect(firstRow.alteration).toEqual(inputRow.alteration);
+    expect(firstRow.lithology).toEqual(inputRow.lithology);
+    expect(firstRow.oxide).toEqual(inputRow.oxide);
+    expect(firstRow.comment).toEqual(inputRow.comment);
+  });
+  it('can dump values properly, interval #2', () => {
+    let logs = new Logging();
+
+    logs.setBaseEntity('interval');
+    logs.addPropertyEntity('geology');
+
+    let inputRow = {
+      z0: 0,
+      z1: 1,
+      alteration: 'SIL',
+      lithology: 'DCT',
+      oxide: 'COX',
+      comment: 'a comment',
+    };
+    logs.rows.fromArray([inputRow]);
+
+    let firstRow = logs.dump()[0];
+    let intervalCalc = inputRow.z1 - inputRow.z0;
+
+    expect(firstRow).toHaveProperty('z0');
+    expect(firstRow).toHaveProperty('z1');
+    expect(firstRow).toHaveProperty('interval');
+    expect(firstRow).toHaveProperty('lithology');
+    expect(firstRow).toHaveProperty('alteration');
+    expect(firstRow).toHaveProperty('oxide');
+    expect(firstRow).toHaveProperty('comment');
+    expect(firstRow.z0).toEqual(inputRow.z0);
+    expect(firstRow.z1).toEqual(inputRow.z1);
+    expect(firstRow.interval).toEqual(intervalCalc);
+    expect(firstRow.alteration).toEqual(inputRow.alteration);
+    expect(firstRow.lithology).toEqual(inputRow.lithology);
+    expect(firstRow.oxide).toEqual(inputRow.oxide);
+    expect(firstRow.comment).toEqual(inputRow.comment);
+  });
+});
+
+describe('set logging constants', () => {
+  it('set new geology constants', () => {
+    let logs = new Logging();
+    logs.addPropertyEntity('geology');
+    let newAlteration = 'NEW_ALTERATION 01';
+    let inputRow = {
+      alteration: newAlteration,
+    };
+    logs.rows.fromArray([inputRow]);
+
+    let willThrow = () => {
+      logs.dump();
+    };
+    expect(willThrow).toThrow('not one of ALTERATIONS');
+
+    logs.setConstant('ALTERATIONS', [
+      ...logs.constants.ALTERATIONS,
+      newAlteration,
+    ]);
+    logs.rows.fromArray([inputRow]);
+
+    let firstRow = logs.dump()[0];
+    expect(firstRow).toHaveProperty('alteration');
+    expect(firstRow.alteration).toEqual(inputRow.alteration);
+  });
+});
+
+/*
 describe('empty base and multiple properties', () => {});
 
-describe('defined base and single properties', () => {});
-
 describe('defined base and multiple properties', () => {});
+ */

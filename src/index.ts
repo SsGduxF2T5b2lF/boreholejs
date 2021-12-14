@@ -4,8 +4,8 @@ import Survey from './Survey';
 import BoreholeList from './BoreholeList';
 import Logging from './Logging';
 
-import * as LoggingBase from './loggingBase';
-import * as LoggingProperties from './loggingProperties';
+import * as LoggingBase from './Logging/Base';
+import * as LoggingProperties from './Logging/Properties';
 
 export {
   BoreholeList,
