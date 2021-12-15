@@ -32,6 +32,11 @@
   },
   "name": "boreholejs",
   "author": "Jatmika Teja",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SsGduxF2T5b2lF/boreholejs.git"
+  },
+  "homepage": "https://github.com/SsGduxF2T5b2lF/boreholejs#readme",
   "module": "dist/boreholejs.esm.js",
   "size-limit": [
     {
@@ -53,7 +58,6 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "linked-list-typescript": "^1.0.15",
     "uuid": "^8.3.2"
   }
 }
