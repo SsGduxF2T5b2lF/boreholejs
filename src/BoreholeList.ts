@@ -1,5 +1,6 @@
 import { v4 as uidv4 } from 'uuid';
 import Borehole from './Borehole';
+import Logging from './Logging';
 import {
   BHListProps,
   BoreholeProps,
@@ -10,6 +11,10 @@ import {
 const ERROR_BHID_DUPES = new Error(`BHID already used`);
 const ERROR_ID_DUPES = new Error(`ID already used`);
 
+// TODO: change boreholes to LinkedList instead of array?
+// TODO: give BoreholeList a logging entity, without dump
+// so new Borehole can inherit logging entity from BoreholeList
+
 /**
  * TODO: in a project set loggingProperties enums
  * currently enums for ALTERATIONS, etc are set
@@ -17,20 +22,32 @@ const ERROR_ID_DUPES = new Error(`ID already used`);
  * might be better if these are configurable through methods
  * such as this.setAlterationEnums()
  */
+/*
+ * TODO: change Borehole logging props when BoreholeList changing logging props
+ * if BoreholeList.logging.setBase('interval')
+ * then all Borehole.logging.setBase('interval')
+ * so existing Borehole can have matching logging entity properties
+ */
 
 class BoreholeList {
   _id: string | undefined;
   _name: string | undefined;
   _boreholes: Borehole[];
-  // _bhIndex: any|undefined;
+  defaultLogging: Logging;
 
   constructor({ ...props }: BHListProps = {}) {
     this._id = undefined;
     this._name = undefined;
     this._boreholes = [];
-    // this._bhIndex = undefined;
 
     this._assignProps(props);
+
+    this.defaultLogging = this.createDefaultLogging();
+  }
+
+  private createDefaultLogging() {
+    let newLog = new Logging();
+    return newLog;
   }
 
   _assignProps(props: BHListProps) {
@@ -51,6 +68,7 @@ class BoreholeList {
   // append new borehole
   public addBorehole({ ...props }: BoreholeProps & CollarProps = {}) {
     let bh = new Borehole({ ...props });
+    bh.defaultLogging.setConfig(this.defaultLogging.getConfig());
 
     // HACK: prevent duplicates, though id already random uuid
     if (this.getBorehole(bh.id)) {

@@ -12,13 +12,64 @@ class Logging {
   propertyEntities: any[];
   rows: LinkedList;
   constants: { [key: string]: string[] };
+  utilValues: { [key: string]: any };
 
   constructor() {
     this.baseEntity = undefined;
     this.propertyEntities = [];
+    this.utilValues = {};
 
     this.rows = new LinkedList();
     this.constants = this.initConstants();
+  }
+
+  remapConfigOut(input: any) {
+    if (!input || !(input instanceof Object)) return {};
+    let result = { ...input };
+    if (result.baseEntity === LoggingBase.Point) {
+      result.baseEntity = 'point';
+    } else if (result.baseEntity === LoggingBase.Interval) {
+      result.baseEntity = 'interval';
+    }
+    result['propertyEntities'] = [];
+    result.propertyEntities = input.propertyEntities.map((item: any) => {
+      if (item === LoggingProperties.Geology) {
+        return 'geology';
+      } else {
+        return undefined;
+      }
+    });
+    return result;
+  }
+
+  remapConfigIn(input: any) {
+    if (!input || !(input instanceof Object)) return;
+    if (Object.keys(input).includes('baseEntity')) {
+      this.setBaseEntity(input.baseEntity);
+    }
+    if (Object.keys(input).includes('propertyEntities')) {
+      this.propertyEntities = [];
+      input.propertyEntities.forEach((item: any) => {
+        if (item === 'geology') {
+          this.addPropertyEntity('geology');
+        }
+      });
+    }
+    if (Object.keys(input).includes('constants')) {
+      this.constants = input.constants;
+    }
+  }
+
+  getConfig() {
+    return this.remapConfigOut({
+      baseEntity: this.baseEntity,
+      propertyEntities: this.propertyEntities,
+      constants: this.constants,
+    });
+  }
+
+  setConfig({ ...props }) {
+    this.remapConfigIn(props);
   }
 
   setConstant(key: string, items: string[]) {

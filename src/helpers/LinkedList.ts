@@ -86,7 +86,7 @@ export class LLItem {
     }
     this.prev = newVal;
 
-    this.parent?.decrease();
+    this.parent?.increase();
     return this.prev;
   }
 
@@ -95,6 +95,9 @@ export class LLItem {
    */
   private detach() {
     let { next, prev } = this;
+    this.parent?.deleteMapID(this.id);
+    this.parent?.decrease();
+
     delete this.next;
     delete this.prev;
     delete this.parent;
@@ -105,18 +108,19 @@ export class LLItem {
    * detach, this.parent.removeItemByID
    */
   removeSelf() {
-    let { next, prev } = this.detach();
-    if (next) {
-      next.prev = prev;
+    if (this.next) {
+      this.next.prev = this.prev;
+      if (this.isHead && this.parent) {
+        this.parent.head = this.next;
+      }
     }
-    if (prev) {
-      prev.next = next;
+    if (this.prev) {
+      this.prev.next = this.next;
+      if (this.isTail && this.parent) {
+        this.parent.tail = this.prev;
+      }
     }
-
-    if (this.hasParent() && this.parent) {
-      this.parent.deleteMapID(this.id);
-      this.parent.decrease();
-    }
+    this.detach();
   }
 
   /**
@@ -125,8 +129,8 @@ export class LLItem {
    */
   removeNext() {
     let nextItem = this.next;
-    if (nextItem && this.parent) {
-      if (nextItem.isTail) {
+    if (nextItem) {
+      if (nextItem.isTail && this.parent) {
         this.parent.tail = this;
       }
       let { next } = nextItem.detach();
@@ -134,7 +138,6 @@ export class LLItem {
       if (next instanceof LLItem) {
         next.prev = this;
       }
-      this.parent.decrease();
     }
   }
 
@@ -153,7 +156,6 @@ export class LLItem {
       if (prev instanceof LLItem) {
         prev.next = this;
       }
-      this.parent.decrease();
     }
   }
 
@@ -221,20 +223,20 @@ export class LinkedList {
     }
   }
 
-  public deleteMapID(uuid: string | undefined) {
-    if (!uuid) return;
-    delete this.idMap[uuid];
-  }
-
   public getItemByID(uuid: string | undefined): LLItem | undefined {
     if (!uuid) return;
     return this.idMap[uuid];
   }
 
+  public deleteMapID(uuid: string | undefined) {
+    if (!uuid) return;
+    delete this.idMap[uuid];
+  }
+
   public removeItemByID(uuid: string | undefined): void {
     if (!uuid) return;
     let llItem = this.getItemByID(uuid);
-    if (!!llItem) {
+    if (llItem) {
       llItem.removeSelf();
     }
   }
@@ -244,7 +246,7 @@ export class LinkedList {
   }
 
   public decrease() {
-    this.size++;
+    this.size--;
   }
 
   public get length(): number {
@@ -278,6 +280,17 @@ export class LinkedList {
       }
       return tmp;
     }
+  }
+
+  /**
+   * iter-like python
+   * returning object a that a.next = this.first
+   */
+  public iter() {
+    return {
+      next: this.first,
+      hasNext: !!this.first,
+    };
   }
 
   public fromArray(input: any[]) {
@@ -338,30 +351,6 @@ export class LinkedList {
     } else {
       tmp = this.first;
       tmp?.addPrev(value);
-    }
-  }
-
-  public remove(value: any) {
-    if (this.isEmpty()) {
-      return;
-    }
-    let tmp = this.head;
-    while (tmp) {
-      if (tmp.value === value) {
-        if (tmp.prev) {
-          tmp.prev.next = tmp.next;
-        } else {
-          this.head = tmp.next;
-        }
-        if (tmp.next) {
-          tmp.next.prev = tmp.prev;
-        } else {
-          this.tail = tmp.prev;
-        }
-        this.size--;
-        return;
-      }
-      tmp = tmp.next;
     }
   }
 
