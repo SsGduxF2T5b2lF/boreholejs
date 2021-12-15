@@ -218,6 +218,73 @@ describe('set logging constants', () => {
   });
 });
 
+describe('logging config', () => {
+  let getPointLog = () => {
+    let logs = new Logging();
+    logs.setBaseEntity('point');
+    logs.addPropertyEntity('geology');
+    return logs;
+  };
+  let getIntervalLog = () => {
+    let logs = new Logging();
+    logs.setBaseEntity('interval');
+    logs.addPropertyEntity('geology');
+    return logs;
+  };
+
+  it('dump from existing config into json', () => {
+    let logs = getPointLog();
+    let config = logs.getConfig();
+
+    expect(config).toHaveProperty('baseEntity');
+    expect(config).toHaveProperty('propertyEntities');
+    expect(config).toHaveProperty('constants');
+    expect(config.baseEntity).toEqual('point');
+    expect(config.propertyEntities).toEqual(['geology']);
+
+    logs = getIntervalLog();
+    config = logs.getConfig();
+
+    expect(config).toHaveProperty('baseEntity');
+    expect(config).toHaveProperty('propertyEntities');
+    expect(config).toHaveProperty('constants');
+    expect(config.baseEntity).toEqual('interval');
+    expect(config.propertyEntities).toEqual(['geology']);
+  });
+  it('set existing config from json', () => {
+    let logs = getPointLog();
+    let newAlteration = [...logs.constants.ALTERATIONS, 'NEWVAL'];
+    logs.setConstant('ALTERATIONS', newAlteration);
+    let config = logs.getConfig();
+
+    let newLog = new Logging();
+    newLog.setConfig(config);
+    expect(newLog.baseEntity).toEqual(LoggingBase.Point);
+    expect(newLog.baseEntity).toEqual(logs.baseEntity);
+    expect(newLog.propertyEntities[0]).toEqual(LoggingProperties.Geology);
+    expect(newLog.propertyEntities).toEqual(logs.propertyEntities);
+
+    expect(newLog.constants).toHaveProperty('ALTERATIONS');
+    expect(newLog.constants.ALTERATIONS).toHaveLength(newAlteration.length);
+    expect(newLog.constants.ALTERATIONS).toEqual(newAlteration);
+
+    logs = getIntervalLog();
+    let newOxide = [...logs.constants.OXIDES, 'NEWVAL'];
+    logs.setConstant('OXIDES', newOxide);
+    config = logs.getConfig();
+
+    newLog.setConfig(config);
+    expect(newLog.baseEntity).toEqual(LoggingBase.Interval);
+    expect(newLog.baseEntity).toEqual(logs.baseEntity);
+    expect(newLog.propertyEntities[0]).toEqual(LoggingProperties.Geology);
+    expect(newLog.propertyEntities).toEqual(logs.propertyEntities);
+
+    expect(newLog.constants).toHaveProperty('OXIDES');
+    expect(newLog.constants.OXIDES).toHaveLength(newOxide.length);
+    expect(newLog.constants.OXIDES).toEqual(newOxide);
+  });
+});
+
 /*
 describe('empty base and multiple properties', () => {});
 

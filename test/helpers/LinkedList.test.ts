@@ -145,3 +145,90 @@ describe('Linked list idMap', () => {
 
   it('can get and remove item by id', () => {});
 });
+
+describe('Linked list method', () => {
+  const inputArray = [1, 2, 3, 4];
+  let getLl = () => {
+    let leList = new LinkedList();
+    leList.fromArray(inputArray);
+    return leList;
+  };
+  it('remove prev', () => {
+    let ll = getLl();
+    let refLength = ll.length + 0;
+    expect(ll.toArray()).toEqual([1, 2, 3, 4]);
+
+    ll?.first?.next?.removePrev();
+    expect(ll.toArray()).toEqual([2, 3, 4]);
+    expect(ll.length).toEqual(refLength - 1);
+    ll?.last?.removePrev();
+    expect(ll.toArray()).toEqual([2, 4]);
+    expect(ll.length).toEqual(refLength - 2);
+  });
+  it('remove next', () => {
+    let ll = getLl();
+    let refLength = 0 + ll.length;
+    expect(ll.toArray()).toEqual(inputArray);
+
+    ll?.last?.prev?.removeNext();
+    expect(ll.toArray()).toEqual([1, 2, 3]);
+    expect(ll.length).toEqual(refLength - 1);
+    ll?.first?.removeNext();
+    expect(ll.toArray()).toEqual([1, 3]);
+    expect(ll.length).toEqual(refLength - 2);
+  });
+  it('remove self', () => {
+    let ll = getLl();
+    let refLength = 0 + ll.length;
+    expect(ll.toArray()).toEqual(inputArray);
+    expect(ll.length).toEqual(inputArray.length);
+
+    ll?.first?.next?.removeSelf();
+    expect(ll.toArray()).toEqual([1, 3, 4]);
+    expect(ll.length).toEqual(refLength - 1);
+  });
+  it('remove by id', () => {
+    let ll = getLl();
+    let refLength = 0 + ll.length;
+    expect(ll.toArray()).toEqual(inputArray);
+    expect(ll.length).toEqual(inputArray.length);
+
+    ll.removeItemByID(ll.last?.id);
+    expect(ll.toArray()).toEqual([1, 2, 3]);
+    expect(ll.length).toEqual(refLength - 1);
+
+    ll = getLl();
+    ll.removeItemByID(ll.first?.next?.id);
+    expect(ll.toArray()).toEqual([1, 3, 4]);
+    expect(ll.length).toEqual(refLength - 1);
+
+    ll = getLl();
+    ll.removeItemByID(ll.first?.id);
+    expect(ll.toArray()).toEqual([2, 3, 4]);
+    expect(ll.length).toEqual(refLength - 1);
+  });
+  it('get by index', () => {
+    let ll = getLl();
+    expect(ll?.get(0)?.id).toEqual(ll?.first?.id);
+    expect(ll?.get(3)?.id).toEqual(ll?.last?.id);
+  });
+  it('add first', () => {
+    let ll = getLl();
+    ll.addFirst(0);
+    expect(ll?.first?.value).toEqual(0);
+  });
+  it('remove first', () => {
+    let ll = getLl();
+    let refLength = ll.length + 0;
+    ll.removeFirst();
+    expect(ll.toArray()).toEqual([2, 3, 4]);
+    expect(ll.length).toEqual(refLength - 1);
+  });
+  it('remove last', () => {
+    let ll = getLl();
+    let refLength = ll.length + 0;
+    ll.removeLast();
+    expect(ll.toArray()).toEqual([1, 2, 3]);
+    expect(ll.length).toEqual(refLength - 1);
+  });
+});

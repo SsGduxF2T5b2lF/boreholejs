@@ -1,4 +1,4 @@
-import { Borehole } from '../src';
+import { Borehole, LoggingBase } from '../src';
 
 let hasDefaultCollar = () => {
   let bh = new Borehole();
@@ -114,11 +114,46 @@ describe('Create borehole w/ collar properties', () => {
   });
 });
 
-/*
 describe('borehole logging', () => {
-  it('can use logging entity from borehole', () => {
-    let bh = new Borehole();
-    let log = bh.logging;
+  let createBhMultiDocs = () => {
+    let borehole = new Borehole();
+    borehole.defaultLogging.setBaseEntity('interval');
+    borehole.defaultLogging.addPropertyEntity('geology');
+    let refNames = ['document01', 'document02'];
+    refNames.forEach(item => borehole.addLogging(item));
+    return borehole;
+  };
+
+  it('default logging config passed to created logging', () => {
+    let borehole = createBhMultiDocs();
+    let bhConfig = borehole.defaultLogging.getConfig();
+
+    let item = undefined;
+    let i = 0;
+    item = borehole.loggings.iter();
+    while (item?.hasNext && i < borehole?.loggings?.length) {
+      item = item.next;
+      let doc = item?.value;
+      expect(doc?.getConfig()).toEqual(bhConfig);
+      i++;
+    }
+  });
+
+  it('can change specific logging config', () => {
+    let borehole = createBhMultiDocs();
+    let doc = borehole.loggings?.last?.value;
+
+    borehole.loggings?.last?.value?.setConfig({
+      baseEntity: 'point',
+    });
+    expect(doc?.baseEntity).toEqual(LoggingBase.Point);
+
+    doc = borehole.loggings?.first?.value;
+    expect(doc?.propertyEntities).toHaveLength(1);
+
+    borehole.loggings?.first?.value?.setConfig({
+      propertyEntities: [],
+    });
+    expect(doc?.propertyEntities).toHaveLength(0);
   });
 });
- */

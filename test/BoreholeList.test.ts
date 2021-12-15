@@ -1,4 +1,4 @@
-import { BoreholeList } from '../src';
+import { BoreholeList, LoggingBase } from '../src';
 
 describe('create borehole list entity', () => {
   it('has id and name', () => {
@@ -202,5 +202,58 @@ describe('Borehole list', () => {
     expect(bhList.boreholes[1].value.totalDepth).toEqual(
       secondBorehole.collar.totalDepth
     );
+  });
+});
+
+describe('borehole list logging', () => {
+  let getField = () => {
+    let field = new BoreholeList();
+    let bhidList = [
+      {
+        bhid: 'BHID01',
+        x: 101,
+        y: 103,
+        z: 105,
+        dip: 363,
+        azimuth: 231,
+        totalDepth: 92,
+      },
+      {
+        bhid: 'BHID02',
+        x: 102,
+        y: 104,
+        z: 106,
+        dip: 364,
+        azimuth: 234,
+        totalDepth: 92,
+      },
+    ];
+    field.boreholes = bhidList;
+    return field;
+  };
+
+  it('default logging config inherited to created boreholes', () => {
+    let field = getField();
+    let fieldConfig = field.defaultLogging.getConfig();
+
+    field.boreholes.forEach(bh => {
+      expect(bh.defaultLogging.getConfig()).toEqual(fieldConfig);
+    });
+  });
+
+  it('each borehole can update config by itself', () => {
+    let field = getField();
+
+    let firstBh = field.boreholes[0];
+
+    let newConfig = {
+      baseEntity: 'interval',
+      propertyEntities: [],
+    };
+    firstBh.defaultLogging.setConfig(newConfig);
+
+    let changedConfig = field.boreholes[0].defaultLogging;
+    expect(changedConfig.baseEntity).toEqual(LoggingBase.Interval);
+    expect(changedConfig.propertyEntities).toHaveLength(0);
   });
 });
