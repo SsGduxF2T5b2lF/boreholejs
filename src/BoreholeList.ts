@@ -79,6 +79,7 @@ class BoreholeList {
     }
 
     this._boreholes.push(bh);
+    return bh;
   }
 
   /**
@@ -171,6 +172,32 @@ class BoreholeList {
 
   public get id() {
     return this._id;
+  }
+
+  dump() {
+    let result: {[key: string]: any} = {};
+    this.boreholes.forEach(bh => {
+      let logging = undefined;
+      logging = bh?.loggings?.iter();
+      while (logging?.next) {
+        logging = logging?.next;
+        let loggingDump = logging?.value?.dump();
+        let docName = logging?.value?.name;
+        if (!result[docName]) {
+          result[docName] = [];
+        }
+        loggingDump = loggingDump.map((item:{[key:string]: any}) => {
+          return {
+            name: this.name,
+            ...bh.value,
+            ...item,
+          }
+        });
+
+        result[docName] = [...result[docName], ...loggingDump];
+      }
+    });
+    return result;
   }
 }
 

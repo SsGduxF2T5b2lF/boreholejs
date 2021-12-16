@@ -135,6 +135,24 @@ class Borehole {
       collar.value = newCollar;
     }
   }
+
+  dump() {
+    let result: {[key: string]: any} = {};
+    let logging = undefined;
+    logging = this.loggings.iter();
+    while (logging?.next) {
+      logging = logging?.next;
+      let rows = logging?.value?.dump()
+      result[logging?.value?.name] = rows.map((item: {[key: string]: any}) => {
+        return {
+          ...this.value,
+          ...item,
+        }
+      });
+    }
+
+    return result;
+  }
 }
 
 export default Borehole;
