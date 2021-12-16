@@ -137,18 +137,20 @@ class Borehole {
   }
 
   dump() {
-    let result: {[key: string]: any} = {};
+    let result: { [key: string]: any } = {};
     let logging = undefined;
     logging = this.loggings.iter();
     while (logging?.next) {
       logging = logging?.next;
-      let rows = logging?.value?.dump()
-      result[logging?.value?.name] = rows.map((item: {[key: string]: any}) => {
-        return {
-          ...this.value,
-          ...item,
+      let rows = logging?.value?.dump();
+      result[logging?.value?.name] = rows.map(
+        (item: { [key: string]: any }) => {
+          return {
+            ...this.value,
+            ...item,
+          };
         }
-      });
+      );
     }
 
     return result;

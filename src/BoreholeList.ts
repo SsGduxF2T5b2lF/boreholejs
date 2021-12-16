@@ -175,7 +175,7 @@ class BoreholeList {
   }
 
   dump() {
-    let result: {[key: string]: any} = {};
+    let result: { [key: string]: any } = {};
     this.boreholes.forEach(bh => {
       let logging = undefined;
       logging = bh?.loggings?.iter();
@@ -186,12 +186,12 @@ class BoreholeList {
         if (!result[docName]) {
           result[docName] = [];
         }
-        loggingDump = loggingDump.map((item:{[key:string]: any}) => {
+        loggingDump = loggingDump.map((item: { [key: string]: any }) => {
           return {
             name: this.name,
             ...bh.value,
             ...item,
-          }
+          };
         });
 
         result[docName] = [...result[docName], ...loggingDump];
