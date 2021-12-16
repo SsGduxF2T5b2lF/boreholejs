@@ -1,3 +1,8 @@
+// LoggingProperties/* Constants Props
+export interface ConstantsProps {
+  [key: string]: (string | number)[];
+}
+
 // LoggingBase/Interval Props
 export interface IntervalProps {
   z0?: number;
@@ -11,17 +16,31 @@ export interface PointProps {
 
 // LoggingProperties/Geology Props
 export interface GeologyProps {
-  lithology?: string;
-  oxide?: string;
-  alteration?: string;
-  comment?: string;
+  lithology?: number | string;
+  oxide?: number | string;
+  alteration?: number | string;
+  comment?: number | string;
+}
+
+// LoggingProperties/AlterationMineral Props
+export interface AlterationMineralProps {
+  Sil?: number | string;
+  SiAr?: number | string;
+  SiCh?: number | string;
+  Ar?: number | string;
+  Ch?: number | string;
+  Ca?: number | string;
+  Ep?: number | string;
+  Se?: number | string;
+  Ad?: number | string;
 }
 
 // LoggingDump Props
 export interface LoggingDumpProps
   extends IntervalProps,
     PointProps,
-    GeologyProps {
+    GeologyProps,
+    AlterationMineralProps {
   interval?: number | undefined;
 }
 

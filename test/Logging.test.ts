@@ -239,8 +239,8 @@ describe('logging config', () => {
     expect(config).toHaveProperty('baseEntity');
     expect(config).toHaveProperty('propertyEntities');
     expect(config).toHaveProperty('constants');
-    expect(config.baseEntity).toEqual('point');
-    expect(config.propertyEntities).toEqual(['geology']);
+    expect(config.baseEntity).toEqual('POINT');
+    expect(config.propertyEntities).toEqual(['GEOLOGY']);
 
     logs = getIntervalLog();
     config = logs.getConfig();
@@ -248,8 +248,8 @@ describe('logging config', () => {
     expect(config).toHaveProperty('baseEntity');
     expect(config).toHaveProperty('propertyEntities');
     expect(config).toHaveProperty('constants');
-    expect(config.baseEntity).toEqual('interval');
-    expect(config.propertyEntities).toEqual(['geology']);
+    expect(config.baseEntity).toEqual('INTERVAL');
+    expect(config.propertyEntities).toEqual(['GEOLOGY']);
   });
   it('set existing config from json', () => {
     let logs = getPointLog();

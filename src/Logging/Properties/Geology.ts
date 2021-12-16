@@ -1,21 +1,17 @@
 import { enumGeology } from '../constants';
 
-import { GeologyProps } from '../../common/types';
-
-interface ConstantsProps {
-  [key: string]: string[];
-}
+import { GeologyProps, ConstantsProps } from '../../common/types';
 
 class Geology {
   // property values
-  _lithology: string | undefined;
-  _oxide: string | undefined;
-  _alteration: string | undefined;
-  _comment: string | undefined;
+  _lithology: number | string | undefined;
+  _oxide: number | string | undefined;
+  _alteration: number | string | undefined;
+  _comment: number | string | undefined;
   // constants, enumerations
-  ALTERATIONS: string[] | undefined;
-  LITHOLOGIES: string[] | undefined;
-  OXIDES: string[] | undefined;
+  ALTERATIONS: (number | string)[] | undefined;
+  LITHOLOGIES: (number | string)[] | undefined;
+  OXIDES: (number | string)[] | undefined;
 
   constructor(
     { ...props }: GeologyProps = {},
