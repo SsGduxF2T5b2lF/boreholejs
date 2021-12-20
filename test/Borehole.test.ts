@@ -115,14 +115,29 @@ describe('Create borehole w/ collar properties', () => {
 });
 
 describe('borehole logging', () => {
+  let refNames = ['document01', 'document02'];
   let createBhMultiDocs = () => {
     let borehole = new Borehole();
     borehole.defaultLogging.setBaseEntity('interval');
     borehole.defaultLogging.addPropertyEntity('geology');
-    let refNames = ['document01', 'document02'];
     refNames.forEach(item => borehole.addLogging(item));
     return borehole;
   };
+
+  it('can print column name', () => {
+    let bh = createBhMultiDocs();
+    let columnMap: { [key: string]: any } = bh.getLoggingColumns();
+    expect(columnMap).toHaveProperty(refNames[0]);
+    expect(columnMap).toHaveProperty(refNames[1]);
+
+    let doc = columnMap[refNames[0]];
+    expect(doc).toHaveProperty('z0');
+    expect(doc).toHaveProperty('z1');
+    expect(doc).toHaveProperty('alteration');
+    expect(doc).toHaveProperty('lithology');
+    expect(doc).toHaveProperty('oxide');
+    expect(doc).toHaveProperty('comment');
+  });
 
   it('default logging config passed to created logging', () => {
     let borehole = createBhMultiDocs();

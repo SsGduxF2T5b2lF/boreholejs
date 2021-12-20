@@ -23,6 +23,23 @@ class Logging {
     this.constants = this.initConstants();
   }
 
+  getColumns() {
+    let result = {};
+    result = {
+      ...result,
+      ...this.baseEntity?.getColumns(),
+    };
+
+    this.propertyEntities.forEach((item: any) => {
+      result = {
+        ...result,
+        ...item?.getColumns(),
+      };
+    });
+
+    return result;
+  }
+
   remapConfigOut(input: any) {
     if (!input || !(input instanceof Object)) return {};
     let result = { ...input };

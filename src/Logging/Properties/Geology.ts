@@ -21,6 +21,15 @@ class Geology {
     this.assignProps(props);
   }
 
+  static getColumns() {
+    return {
+      lithology: 'lithology',
+      oxide: 'oxide',
+      alteration: 'alteration',
+      comment: 'comment',
+    };
+  }
+
   private setConstants({ ...constants }: ConstantsProps = {}) {
     if (constants.ALTERATIONS) {
       this.ALTERATIONS = constants.ALTERATIONS;

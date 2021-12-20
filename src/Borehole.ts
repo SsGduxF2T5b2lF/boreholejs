@@ -34,6 +34,23 @@ class Borehole {
     return this._id;
   }
 
+  getLoggingColumns() {
+    let result = {};
+    let item = undefined;
+    item = this.loggings.iter();
+    while (item?.next) {
+      item = item.next;
+      let log = item.value;
+      if (log) {
+        result = {
+          ...result,
+          [log?.name]: log?.getColumns(),
+        };
+      }
+    }
+    return result;
+  }
+
   mapLogging(uuid: string, item: BoreholeLogging) {
     if (!uuid) return;
     if (!this.loggingMap[uuid]) {

@@ -31,6 +31,20 @@ class AlterationMineral {
     this.assignProps(props);
   }
 
+  static getColumns() {
+    return {
+      Sil: 'Sil',
+      SiAr: 'SiAr',
+      SiCh: 'SiCh',
+      Ar: 'Ar',
+      Ch: 'Ch',
+      Ca: 'Ca',
+      Ep: 'Ep',
+      Se: 'Se',
+      Ad: 'Ad',
+    };
+  }
+
   setConstants({ ...constants }: ConstantsProps = {}) {
     this.AD = constants.AD || enumAlterationMineral.AD;
     this.AR = constants.AR || enumAlterationMineral.AR;

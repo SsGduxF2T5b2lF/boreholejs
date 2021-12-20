@@ -11,6 +11,13 @@ class Interval {
     this._assignProps(props);
   }
 
+  static getColumns() {
+    return {
+      z0: 'z0',
+      z1: 'z1',
+    };
+  }
+
   _assignProps({ ...props }: IntervalProps = {}) {
     let { z0, z1 } = props;
 

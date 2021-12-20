@@ -12,6 +12,12 @@ class Point {
     this._assignProps(props);
   }
 
+  static getColumns() {
+    return {
+      at: 'at',
+    };
+  }
+
   _assignProps({ ...props }: PointProps = {}) {
     let { at } = props;
 
